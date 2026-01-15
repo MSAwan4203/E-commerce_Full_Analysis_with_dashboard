@@ -164,7 +164,7 @@ FROM olist_orders_dataset
 WHERE order_status = 'delivered' 
   AND order_delivered_customer_date IS NOT NULL;
   
-#Q10: avg delvery time from order book to delivered
+#Q10: avg delvery time from order book to delivered by cities
 SELECT 
     customers.customer_city AS cities,
     ROUND(AVG(DATEDIFF(orders.order_delivered_customer_date,
@@ -178,4 +178,16 @@ FROM
 WHERE
     orders.order_status = 'delivered'
 GROUP BY cities
-ORDER BY no_of_orders DESC
+ORDER BY no_of_orders DESC;
+
+#Q11: No of orders by years and months 
+SELECT 
+    DATE_FORMAT(order_purchase_timestamp, '%Y') AS year,
+    DATE_FORMAT(order_purchase_timestamp, '%M') AS month,
+    COUNT(order_id) AS no_of_orders
+FROM
+    olist_orders_dataset
+WHERE
+    order_status = 'delivered'
+GROUP BY year , month , MONTH(order_purchase_timestamp)
+ORDER BY year , MONTH(order_purchase_timestamp);
