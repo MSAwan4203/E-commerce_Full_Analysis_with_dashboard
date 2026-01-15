@@ -145,4 +145,37 @@ SELECT
 FROM
     olist_order_payments_dataset
 GROUP BY payment_type
-HAVING payment_type <> 'not_defined'
+HAVING payment_type <> 'not_defined';
+
+#Q8: More revenue from installment or 1-time pay
+SELECT 
+    ROUND(SUM(CASE WHEN payment_installments <> '1' THEN payment_value ELSE 0 END), 0) AS installment_total,
+    ROUND(SUM(CASE WHEN payment_installments = '1' THEN payment_value ELSE 0 END), 0) AS single_payment_total,
+    ROUND(SUM(CASE WHEN payment_installments <> '1' THEN payment_value ELSE 0 END) - 
+          SUM(CASE WHEN payment_installments = '1' THEN payment_value ELSE 0 END), 0) AS difference
+FROM olist_order_payments_dataset;
+
+#Q9: Fast vs Late vs on-time Delivery
+SELECT 
+    COUNT(CASE WHEN DATEDIFF(order_estimated_delivery_date, order_delivered_customer_date) > 0 THEN 1 END) AS fast_orders,
+    COUNT(CASE WHEN DATEDIFF(order_estimated_delivery_date, order_delivered_customer_date) < 0 THEN 1 END) AS late_orders,
+    COUNT(CASE WHEN DATEDIFF(order_estimated_delivery_date, order_delivered_customer_date) = 0 THEN 1 END) AS on_time_orders
+FROM olist_orders_dataset
+WHERE order_status = 'delivered' 
+  AND order_delivered_customer_date IS NOT NULL;
+  
+#Q10: avg delvery time from order book to delivered
+SELECT 
+    customers.customer_city AS cities,
+    ROUND(AVG(DATEDIFF(orders.order_delivered_customer_date,
+                    orders.order_purchase_timestamp)),
+            2) AS avg_day,
+    COUNT(orders.order_id) AS no_of_orders
+FROM
+    olist_orders_dataset AS orders
+        LEFT JOIN
+    olist_customers_dataset AS customers ON orders.customer_id = customers.customer_id
+WHERE
+    orders.order_status = 'delivered'
+GROUP BY cities
+ORDER BY no_of_orders DESC
