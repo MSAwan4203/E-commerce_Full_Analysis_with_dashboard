@@ -191,3 +191,8 @@ WHERE
     order_status = 'delivered'
 GROUP BY year , month , MONTH(order_purchase_timestamp)
 ORDER BY year , MONTH(order_purchase_timestamp);
+
+#Q12: Different order status
+select order_status, count( order_id) as no_of_orders from olist_orders_dataset
+group by order_status
+order by no_of_orders desc;
