@@ -14,11 +14,11 @@ LIMIT 10;
 #Q2: Top 10 cities by sales
 SELECT 
     customers.customer_city,
-    ROUND(SUM(payment_value), 0) AS sales
+    ROUND(SUM(items.price+items.freight_value), 0) AS sales
 FROM
     olist_orders_dataset AS orders
         JOIN
-    olist_order_payments_dataset AS payments ON orders.order_id = payments.order_id
+    olist_order_items_dataset AS items ON orders.order_id = items.order_id
         JOIN
     olist_customers_dataset AS customers ON customers.customer_id = orders.customer_id
 GROUP BY customers.customer_city
@@ -43,11 +43,11 @@ LIMIT 10;
 #Q4: Top 10 states by sales
 SELECT 
     customers.customer_state,
-    ROUND(SUM(payment_value), 0) AS sales
+    ROUND(SUM(items.price+items.freight_value), 0) AS sales
 FROM
     olist_orders_dataset AS orders
         JOIN
-    olist_order_payments_dataset AS payments ON orders.order_id = payments.order_id
+    olist_order_items_dataset AS items ON orders.order_id = items.order_id
         JOIN
     olist_customers_dataset AS customers ON customers.customer_id = orders.customer_id
 GROUP BY customers.customer_state
@@ -137,4 +137,12 @@ HAVING sellers.seller_id IS NOT NULL
 ORDER BY no_of_orders DESC
 LIMIT 10;
 
-#Q7:
+#Q7: Which payment methode is most used with revenue
+SELECT 
+    payment_type,
+    COUNT(order_id) AS no_of_use,
+    ROUND(SUM(payment_value), 0) AS revenue
+FROM
+    olist_order_payments_dataset
+GROUP BY payment_type
+HAVING payment_type <> 'not_defined'
