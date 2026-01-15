@@ -114,20 +114,23 @@ FROM
     product_category_name_translation AS translation ON data.name = translation.ï»¿product_category_name
 ORDER BY no_of_orders DESC;
 
-#Q6: Top 10 sellers by No of orders with cities, states and revenue
+#Q6: Top 10 sellers by No of orders with cities, states, revenue and avg rating
 SELECT 
     sellers.seller_id AS id_of_seller,
     COUNT(DISTINCT orders.order_id) AS no_of_orders,
     sellers.seller_city AS city,
     sellers.seller_state AS state,
     ROUND(SUM(items.freight_value + items.price),
-            0) AS revenue
+            0) AS revenue,
+    AVG(review.review_score) AS rating
 FROM
     olist_orders_dataset AS orders
         LEFT JOIN
     olist_order_items_dataset AS items ON orders.order_id = items.order_id
         LEFT JOIN
     olist_sellers_dataset AS sellers ON items.seller_id = sellers.seller_id
+        JOIN
+    olist_order_reviews_dataset AS review ON orders.order_id = review.order_id
 GROUP BY id_of_seller , city , state
 HAVING sellers.seller_id IS NOT NULL
 ORDER BY no_of_orders DESC
