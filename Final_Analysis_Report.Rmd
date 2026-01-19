@@ -1,0 +1,23 @@
+---
+output:
+  html_document:
+    theme: superhero
+    highlight: zenburn
+---
+
+<div align="center">
+
+# E-commerce Analysis with Dashboard
+
+**Author:** Muhammad Saad  
+**Date:** January 19, 2026  
+**Dataset:** Olist Brazilian E-commerce  
+**Tools:** SQL, Power BI, DAX
+
+</div>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
