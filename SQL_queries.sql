@@ -58,22 +58,16 @@ LIMIT 10;
 
 #Q5.a: Top 10 categories by No of orders
 SELECT 
-    translation.product_category_name_english AS name_of_category,
-    no_orders
+    product_category_name_english, COUNT(order_id) AS no
 FROM
-    (SELECT 
-        products.product_category_name AS name,
-            COUNT(DISTINCT orders.order_id) AS no_orders
-    FROM
-        olist_orders_dataset AS orders
-    JOIN olist_order_items_dataset AS items ON orders.order_id = items.order_id
-    JOIN olist_products_dataset AS products ON items.product_id = products.product_id
-    GROUP BY products.product_category_name
-    ORDER BY no_orders DESC
-    LIMIT 10) AS data
+    olist_order_items_dataset AS items
+        LEFT JOIN
+    olist_products_dataset AS products ON items.product_id = products.product_id
         JOIN
-    product_category_name_translation AS translation ON data.name = translation.ï»¿product_category_name
-ORDER BY no_orders DESC;
+    product_category_name_translation AS name ON products.product_category_name = name.ï»¿product_category_name
+GROUP BY product_category_name_english
+ORDER BY no DESC
+LIMIT 10;
 
 #-------
 
