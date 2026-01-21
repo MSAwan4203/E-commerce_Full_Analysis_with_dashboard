@@ -1,8 +1,9 @@
 ---
 output:
   html_document:
-    theme: superhero
-    highlight: zenburn
+    theme:
+     cerulean
+   
 ---
 
 <div align="center">
@@ -14,10 +15,294 @@ output:
 **Dataset:** Olist Brazilian E-commerce  
 **Tools:** SQL, Power BI, DAX
 
-</div>
+This analysis investigates the key drivers of business growth for Olist, a leading Brazilian e-commerce marketplace. The study focuses on how various operational parameters influence two primary KPIs:
+**Total Revenue** and **Order Volume**
 
+</div>
+<div style="border-top: 2px solid black; margin: 20px 0;"></div>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+## Executive Summary: Olist E-commerce Performance Analysis (2016–2018)
+
+This analysis provides a comprehensive overview of Olist's ecosystem, evaluating the performance of customers, sellers, and logistics across Brazil.
+
+### Key Performance Indicators (KPIs)
+
+* **Order Volume & Reach:** Processed **99.45K orders** from **96.10K unique customers**, indicating a vast but largely single-purchase user base.
+* **Total Revenue:** Generated **R$ 15.42M** in gross revenue over a 24-month period.
+* **Service Quality:** Maintained a strong **97.02% delivery success rate** with an average platform **rating of 4.09/5 stars**.
+* **Logistics:** The average fulfillment cycle (order to delivery) stands at **12.5 days.**
+
+### ➤ Sales & Payment Trends
+
+* **Payment Preferences:** **Credit cards** are the dominant payment method. Interestingly, **installment-based payments** drive the bulk of the value, generating **R$ 10.02M**—significantly higher than one-time transactions.
+* **Growth Trajectory:** Monthly orders scaled from **zero** in late **2016** to a peak of **6,512** in **August 2018**. However, a sharp contraction occurred in **late 2018** (dropping to **16** orders in September and **4** in October), suggesting a potential data cutoff or operational shift.
+
+### ➤ Market & Seller Dynamics
+
+* **Top Categories:** The most resilient segments are **Household Goods** and **Teen-focused products**, with the top **seven categories** each exceeding **5,000** orders.
+* **Geographic Hub:** **São Paulo** is the primary engine of the platform, leading in both volume **(47.30K orders)** and revenue **(R$ 5.77M)**.
+* **Seller Landscape:** The platform hosts over **3,000 sellers**. The market is highly fragmented, with no single seller exceeding **2,000 orders**, ensuring a diverse but **competitive merchant base**.
+
+### ➤ Strategic Recommendations
+
+* **Maximize Installment Potential**: With installments driving **64.85%** of revenue, Olist should prioritize marketing high-ticket items with flexible credit options to leverage Brazil’s high-interest consumer behavior.
+* **Target High-Growth Segments**: Align "Easy-to-Pay" financing with the most popular categories, specifically focusing on **Household** and **Teenager-oriented** products to capture the core demographic.
+* **Improve Customer Retention**: Transition from a single-transaction model to a loyalty-based ecosystem by offering returning customers exclusive discounts or preferential payment terms.
+
+While the platform showed consistent growth through mid-2018, the heavy reliance on installment payments suggests that Olist's revenue is closely tied to consumer credit availability. Additionally, the dominant performance of São Paulo indicates a high geographic concentration that offers both a stable core and an opportunity for regional expansion.
+
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+## Business Questions
+
+The primary objectives of this analysis are twofold:
+
+* **Geographic and Financial Mapping:** To identify the specific regions (cities) and channels (sellers) that generate the highest order volume and revenue.
+* **Trend Identification:** To pinpoint high-demand product categories that currently command the most market demand and consumer interest.
+
+By synthesizing order volume and revenue patterns across cities, sellers, and categories, this study provides actionable insights to support **data-driven decision-making**. The goal is to enable the business to prioritize high-performing segments and optimize overall commercial strategy.
+
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+## Dataset Overview
+
+<img src="C:/Users/Saad Awan/Documents/files_for_R/e_commerce_brazil_data_scheme.png" 
+     alt="Description" 
+     style="width:60%; height:auto; 
+            display:block; margin:auto;
+            padding: 10px;
+            margin: 10px auto; 
+            box-sizing: border-box;"
+     align="right">
+
+The dataset utilized in this analysis is a publicly available collection of anonymized data provided by **Olist** (curated by Francisco Magioli, Leo Dabague, and Andre Sionek) and hosted on **[Kaggle](https://www.kaggle.com)** under [License](https://creativecommons.org/licenses/by-nc-sa/4.0/). It offers a comprehensive view of the Brazilian e-commerce landscape, spanning from **September 2016 to October 2018**.
+
+### ➤ Data Structure & Composition
+
+The information is organized into **nine CSV files**, capturing various dimensions of the marketplace:
+
+* **Core Transactions**: `Orders` (99,441 rows), `Order Items` (112,650 rows), and `Payments` (103,886 rows).
+* **Participants**: `Customers` and `Sellers`.
+* **Product Details**: `Products` (32,951 rows) and `Product Category Name Translation` (English mapping).
+* **Customer Feedback**: `Reviews` (99,223 rows).
+* **Logistics**: `Geolocation` data for spatial analysis.
+
+### ➤  Privacy & Data Integrity
+
+To ensure the highest standards of data ethics and quality, the following measures were applied:
+
+* **Anonymization**: All Personally Identifiable Information (**PII**), such as specific home addresses and credit card numbers, has been removed to protect **user privacy**.
+* **ROCCC Standards**: The dataset fulfills all **ROCCC** criteria (**R**eliable, **O**riginal, **C**omprehensive, **C**urrent, and **C**ited), ensuring it is high-quality for professional data analysis.
+* **Objective**: The data is used strictly for identifying commercial trends and operational performance.
+
+For a technical deep dive into specific field definitions and data types, please refer to the accompanying `metadata_about_datasets.txt` file.
+
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+## Technical Analysis: SQL Implementation
+
+In this phase, the raw data was transformed into actionable insights using SQL. The process involved rigorous data loading, schema verification, and the execution of complex queries to address critical business questions.
+
+### ➤  Data Ingestion & Environment Setup
+
+Before performing the analysis, the nine CSV datasets were imported into a **MySQL** relational database.
+
+* **Data Loading**: Used the `LOAD DATA LOCAL INFILE` command to efficiently import large datasets into the database.
+
+* **Integrity Management**: Tables were configured with appropriate data types to ensure high precision for financial and temporal calculations.
+
+### ➤  Analytical Scope
+
+<img src="C:/Users/Saad Awan/Documents/files_for_R/sql_query_for_e_com_brazil.png" 
+     alt="Description" 
+     style="width:60%; height:auto; 
+            display:block; margin:auto;
+            padding: 10px;
+            margin: 10px auto; 
+            box-sizing: border-box;"
+     align="right">
+
+I developed **14** targeted queries to evaluate Olist’s operational and commercial performance:
+
+* **Geographic Analysis**: Identified the **Top 10 cities** and **states** by order volume and total revenue (Q1–Q4).
+* **Product Performance**: Analyzed the **Top 10 categories** by orders, sales, and review scores (Q5.a–Q5.c).
+* **Seller Benchmarking**: Ranked the **Top 10 sellers** using `DENSE_RANK()` based on order volume, city, state, revenue, and average rating (Q6).
+* **Financial Insights**: Evaluated the most utilized **payment methods** and compared revenue from installment-based versus one-time payments (Q7–Q8).
+* **Logistics & Delivery**: Measured **delivery** efficiency by comparing estimated vs. actual dates and calculating average lead times by city (Q9–Q10).
+* **Temporal Trends**: Tracked order **volume growth** by year and month (Q11).
+* **Customer Loyalty**: Segmented the **user** base into repeat versus one-time customers (Q13).
+* **Customer Satisfaction**: Analyzed the **correlation** between delivery speed and review ratings (Q14).
+
+### ➤  Advanced SQL Techniques Applied
+
+To extract these insights, I utilized a comprehensive suite of SQL functions and logic:
+
+* **Complex Joins**: Implemented multi-table `JOIN`, `LEFT JOIN`, and `RIGHT JOIN` operations to unify disparate datasets (e.g., linking products to English translations).
+* **Window Functions**: Used `DENSE_RANK()` for competitive ranking of sellers.
+* **Conditional Logic**: Employed `CASE` statements to categorize delivery statuses and segment payment types.
+* **Date Manipulation**: Used `DATEDIFF` to calculate shipping speeds and `DATE_FORMAT` for time-series trend analysis.
+* **Aggregation**: Leveraged `SUM`, `COUNT`, `AVG`, `ROUND`, and `DISTINCT` within `GROUP BY` and `ORDER BY` clauses to synthesize raw data.
+* **Subqueries**: Utilized nested queries to perform multi-level data aggregations.
+
+For the full source code and logic of these calculations, please refer to the attached `SQL_queries.sql` file.
+
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+## Data viz and Data Modeling
+
+To transition to visual insights, I prepared the data using **SQL Views** for each dataset within the **RDBMS** to ensure a clean import process.
+
+### ➤ Data Modeling
+
+Once loaded into **Power BI**, a robust data model was established:
+
+* **Core Tables**: Centered on `Orders` and `Order_Items` as the primary fact tables.
+* **Relationships**: Power BI automatically mapped connections between datasets, which I refined into a functional Star Schema.
+* **Dynamic Filtering**: I enabled **cross-filtering (both directions)**, ensuring the dashboard responds dynamically to any selected field or category.
+
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+<img src="C:/Users/Saad Awan/Documents/files_for_R/dashboard_e_com_brazil.png" 
+     alt="Description" 
+     style="width:60%; height:auto; 
+            display:block; margin:auto;
+            padding: 5px;
+            margin: 10px auto; 
+            box-sizing: border-box;"
+     align="right">
+
+## Dashboard Overview: Olist Interactive Analytics
+
+I developed a fully dynamic dashboard to visualize the Olist ecosystem, transforming complex SQL outputs into intuitive visual narratives.
+
+### ➤ Strategic KPIs
+
+<img src="C:/Users/Saad Awan/Documents/files_for_R/dashboard_e_com_brazil_3.png" 
+     alt="Description" 
+     style="width:60%; height:auto; 
+            display:block; margin:auto;
+            padding: 5px;
+            margin: 10px auto; 
+            box-sizing: border-box;"
+     align="right">
+
+The dashboard features seven high-level Key Performance Indicators (KPIs) for instant health monitoring:
+
+* **Customer Reach**: 96.10K Total Customers across 99.44K Orders.
+* **Operational Success**: 97.02% Delivery Rate with a 12.5-day average fulfillment cycle.
+* **Financial & Quality Growth**: 15.42M Total Revenue with a solid 4.09 average rating.
+
+### ➤ Comparative Analysis (Bar & Map Charts)
+
+<img src="C:/Users/Saad Awan/Documents/files_for_R/dashboard_e_com_brazil_2.png" 
+     alt="Description" 
+     style="width:60%; height:auto; 
+            display:block; margin:auto;
+            padding: 5px;
+            margin: 10px auto; 
+            box-sizing: border-box;"
+     align="right">
+
+
+* **Market Distribution**: Three bar charts rank performance by **Seller ID**, **Product Category**, and **Customer City**, identifying São Paulo as the leading hub.
+* **Geographic Density**: A map chart visualizes order concentration by state, highlighting regional market penetration across Brazil.
+
+### ➤ rend & Payment Insights
+
+
+* **Growth Trajectory**: A dual-axis column chart tracks the **Revenue** vs. **Order** Volume trend (2016–2018), showcasing monthly scaling and seasonal patterns.
+* **Financial Behavior:** A **Donut Chart** compares Installment (10.02M) vs. One-time (5.41M) revenue.A **Pie Chart** displays payment method popularity, confirming Credit Cards as the dominant choice.
+
+<br>
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+## Key Insights: Olist Business Performance (2016–2018)
+
+This section highlights the critical trends and metrics identified during the analysis of Olist's operations.
+
+
+### ➤ Operational Excellence and Growth
+
+* **Order Fulfillment**: Maintained a high delivery success rate of 97.02% with average fulfillment cycle of **12.5** days.
+* **Market Expansion**: Successfully scaled operations from **45.10K orders** in 2017 to **54.01K orders** in 2018, driving a revenue increase from **R$ 6.92M** to **R$ 8.45M**.
+* **Customer Base**: Reached a total of **96.10K** unique customers across **99.44K total orders**, indicating a vast but largely single-purchase customer base.
+
+### ➤ Geographic & Category Dominance
+
+* **Regional Hubs**: Over **22%** of all orders are concentrated in two major cities: **São Paulo** (15,540 orders) and **Rio de Janeiro** (6,882 orders).
+* **High-Performing States**: **São Paulo (SP)** is the undisputed leader, accounting for **41,746 orders** and generating **R$ 57.77M** in gross sales value.
+* **Top Product Segments**: Five categories drove the most significant volume (each exceeding 5,000 orders): Bed Bath Table, Health & Beauty, Sports & Leisure, Computer Accessories, and Furniture Decor.
+
+
+### ➤ Payment Dynamics & Consumer Behavior
+
+The analysis reveals a sharp divide in purchasing behavior based on payment structure:
+
+| Feature         | One-Time Payments                          | Installment Payments           |
+|-----------------|--------------------------------------------|--------------------------------|
+| Revenue         | R$ 5.41M                                   | R$ 10.02M                      |
+| Order Volume    | 47.58K Orders                              | 49.66K Orders                  |
+| Avg. Rating     | 4.19 / 5                                   | 4.12 / 5                       |
+| Top Categories  | Sports, Computers, Health                  | Bed/Bath, Health, Watches      |
+| Payment Method  | Diverse (Credit, Boleto, Debit, Voucher)   | Credit Card, Voucher           |
+
+* **Purchasing Power**: Installment payments are a critical revenue driver, accounting for approximately **64.85% of total revenue** (R$ 10.02M), as they allow customers to finance higher-ticket items like watches and furniture.
+* **Credit Reliance**: While one-time payments utilize a mix of methods (Boleto, Debit), installment purchases are exclusively powered by credit cards.
+
+### ➤ Seller Ecosystem
+
+* **High Fragmentation**: The platform supports over **3,000 active sellers**.
+* **Balanced Distribution**: No single seller dominates the market, with all individual sellers processing fewer than 2,000 orders, ensuring a competitive and diverse marketplace.
+
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+## Strategic Business Recommendations
+
+Based on the data insights from the Olist e-commerce analysis, the following strategic actions are recommended to optimize revenue and customer retention:
+
+### ➤ Capitalize on Installment-Driven Revenue
+
+The analysis reveals that **installment payments generate 64.85% of total revenue**, despite having a similar order volume to one-time payments (49.66K vs. 47.58K).
+
+* **Strategic Promotion**: Olist should actively promote installment plans, particularly for high-ticket items.
+* **Revenue Optimization**: Given the high-interest environment in Brazil, expanding installment options allows the business to capture more value while making expensive products more accessible.
+* **Category Alignment**: Since the top categories (Bed & Bath, Health & Beauty) already dominate installment sales, targeted marketing in these segments will directly boost the bottom line.
+
+### ➤ Targeted Demographic Focus
+
+The top seven product categories (each exceeding 5,000 orders) are primarily related to **Household Goods** and **Teenager/Lifestyle products**.
+
+* **Segment Targeting**: Marketing efforts should be specifically tailored toward teenagers and women, who drive the volume in these high-performing categories.
+* **Integrated Financing**: Combining these popular categories with "Easy-to-Pay" installment options will lower the barrier to entry for younger consumers and head-of-household buyers.
+
+### ➤ Customer Retention & Loyalty Programs
+
+Data shows that the vast majority of Olist’s **96.10K customers** are unique, one-time shoppers.
+
+* **Incentivized Re-purchasing**: To improve the Customer Lifetime Value (CLV), the business should implement loyalty rewards or "old customer" discounts.
+* **Frictionless Returns**: Offering exclusive installment terms or early-access deals to returning customers will encourage loyalty and transition the platform from a single-transaction marketplace to a recurring shopping destination.
+
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+## Project Limitations
+
+To ensure a transparent and objective analysis, it is important to acknowledge the specific constraints of the Olist dataset:
+
+* **Financial Scope**: The dataset lacks cost-of-goods-sold (COGS) and operational expense data, meaning the analysis is restricted to **Gross Revenue** rather than net profit.
+* **Geographic Focus**: The findings are exclusively based on transactions within **Brazil**, and may not be applicable to other international e-commerce markets.
+* **Product Granularity**: Data is categorized by **product segment** (e.g., "Health & Beauty") rather than specific product names or SKUs, which limits the ability to perform a deep-dive inventory or brand-level analysis.
+* **Economic Variables**: While installment payments are a major factor, the dataset does not include **specific interest rates** or financing fees, preventing a more granular financial impact study.
+
+<div style="border-top: 1px solid black; margin: 10px 0;"></div>
+
+## Future Enhancements
+To further evolve this project, the following analyses could be conducted as more granular data becomes available:
+
+* **Financial & Profitability Modeling**: By integrating Cost of Goods Sold (COGS) and operational expenses, the analysis could shift from gross revenue to net profit margins and ROI.
+
+
+
 
