@@ -5,6 +5,12 @@ This project analyzes the performance of Olist, a major Brazilian e-commerce mar
 
 By synthesizing data across these dimensions, this study provides actionable insights to support data-driven decisions, helping the business focus on high-performing segments and optimize commercial strategy.
 
+## 📊 Quick Links
+
+* [Final Analysis Report](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/edit/main/Final_Analysis_Report.html)
+* [SQL Queries](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/edit/main/SQL_queries.sql)
+* [Dashboard](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/edit/main/dashboard.pbix)
+
 ## Dataset Overview
 The analysis utilizes a publicly available dataset provided by Olist on Kaggle. It consists of 9 CSV files organized in a relational schema, covering the period from September 2016 to October 2018.
 
