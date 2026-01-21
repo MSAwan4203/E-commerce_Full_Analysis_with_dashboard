@@ -7,9 +7,9 @@ By synthesizing data across these dimensions, this study provides actionable ins
 
 ## 📊 Quick Links
 
-* [Final Analysis Report](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/edit/main/Final_Analysis_Report.html)
-* [SQL Queries](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/edit/main/SQL_queries.sql)
-* [Dashboard](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/edit/main/dashboard.pbix)
+* [Final Analysis Report](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/Final_Analysis_Report.html)
+* [SQL Queries](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/SQL_queries.sql)
+* [Dashboard](https://github.com/MSAwan4203/E-commerce_Full_Analysis_with_dashboard/dashboard.pbix)
 
 ## Dataset Overview
 The analysis utilizes a publicly available dataset provided by Olist on Kaggle. It consists of 9 CSV files organized in a relational schema, covering the period from September 2016 to October 2018.
